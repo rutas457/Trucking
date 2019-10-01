@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Users</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="/assets/css/styles5.min.css">
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+    <div class="container"><a class="navbar-brand" href="#">TruckKing</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse"
+             id="navcol-1">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/personal-cabinet"
+                                                            th:text="#{cabinet}"></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/place-order"
+                                                            th:text="#{order}"></a></li>
+
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/users"
+                                                                                                  th:text="#{nav.usersList}"></a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/cabinet"
+                                                                                                  th:text="#{orders}"></a>
+                </li>
+            </ul>
+            <span class="navbar-text actions"> <a class="login" th:href="@{/logout}" th:text="#{nav.logout}"></a></span>
+            <button class="btn" type="button" id="locales" value="uk"
+                    style="height: 20px;background-image: url(&quot;/assets/img/ua.jpg&quot;);background-position: center;margin-right: 2px;margin-left: 15px;"></button>
+            <button
+                    class="btn" type="button" id="locales2" value="en"
+                    style="height: 20px;background-image: url(&quot;/assets/img/en.jpg&quot;);background-position: center;background-size: cover;background-repeat: no-repeat;padding-right: 12px;margin: 6px;margin-top: 6px;margin-right: -27px;margin-left: 1px;"></button>
+        </div>
+    </div>
+</nav>
+<div class="row">
+    <div class="col">
+        <p class="d-lg-flex justify-content-lg-center align-items-lg-end" style="font-size: 23px;">
+            <strong>Users</strong></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Is Banned</th>
+                    <th>Is Activated</th>
+                    <th>Ban</th>
+                    <th>Promote to Admin</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user: ${users}">
+                    <td th:text="${user.firstName} +' '+${user.surname}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.isBanned}"></td>
+                    <td th:text="${user.enabled}"></td>
+                    <td><a th:href="@{/admin/users/ban(email=${user.email})}">Ban</a></td>
+                    <td><a th:href="@{/admin/users/promote(email=${user.email})}">Promote</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/script5.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

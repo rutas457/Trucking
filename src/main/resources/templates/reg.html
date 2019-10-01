@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Registration</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<button id="locales" value="uk"><img src="https://www.countryflags.io/ua/shiny/32.png"></button>
+<button id="locales2" value="en"><img src="https://www.countryflags.io/gb/shiny/32.png"></button>
+
+<div class="login-form" align="center">
+    <form action="#" th:action="@{/reg}" th:object="${userDTO}"
+          method="post">
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span> <input
+                    type="text" class="form-control" th:field="*{name}"
+                    th:placeholder="#{msg.name}"/>
+
+            </div>
+            <span class="red" th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"></span>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span> <input
+                    type="text" class="form-control" th:field="*{surname}"
+                    th:placeholder="#{msg.surname}"/>
+
+            </div>
+            <span class="red" th:if="${#fields.hasErrors('surname')}"
+                  th:errors="*{surname}"></span>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-inbox"></i></span> <input
+                    type="text" class="form-control" th:field="*{email}"
+                    placeholder="Email"/>
+
+            </div>
+            <span class="red" th:if="${#fields.hasErrors('email')}"
+                  th:errors="*{email}"></span>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
+                    type="password" class="form-control" th:field="*{password}"
+                    th:placeholder="#{msg.password}"/>
+
+            </div>
+            <span class="red" th:if="${#fields.hasErrors('password')}"
+                  th:errors="*{password}"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" th:text="#{msg.reg}" class="btn btn-primary login-btn btn-block">
+            </button>
+        </div>
+        <p class="message"><a href="http://localhost:8080/login" th:text="#{msg.sign.in}"></a></p>
+    </form>
+</div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+</html>

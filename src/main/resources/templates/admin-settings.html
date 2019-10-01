@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>delivery_test_save</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+    <div class="container"><a class="navbar-brand" href="#">TruckKing</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse"
+             id="navcol-1">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/personal-cabinet"
+                                                            th:text="#{cabinet}"></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/place-order"
+                                                            th:text="#{order}"></a></li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a
+                        class="nav-link active"
+                        href="admin-settings.html" th:text="#{settings}"></a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/users"
+                                                                                                  th:text="#{nav.usersList}"></a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/cabinet"
+                                                                                                  th:text="#{orders}"></a>
+                </li>
+            </ul>
+            <span class="navbar-text actions"> <a class="login" th:href="@{/logout}">Log out</a></span>
+            <button class="btn" type="button" id="locales" value="uk"
+                    style="height: 20px;background-image: url(&quot;/assets/img/ua.jpg&quot;);background-position: center;margin-right: 2px;margin-left: 15px;"></button>
+            <button
+                    class="btn" type="button" id="locales2" value="en"
+                    style="height: 20px;background-image: url(&quot;/assets/img/en.jpg&quot;);background-position: center;background-size: cover;background-repeat: no-repeat;padding-right: 12px;margin: 6px;margin-top: 6px;margin-right: -27px;margin-left: 1px;"></button>
+        </div>
+    </div>
+</nav>
+<div class="row justify-content-center align-items-center align-content-center align-self-center">
+    <div class="col" style="width: 404px;">
+        <div class="table-responsive" style="width: 404px;">
+            <table class="table">
+                <thead style="width: 453px;">
+                <tr class="border-light">
+                    <th>Personal data</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Your name:</td>
+                    <td>Oleksandr Bondarenko</td>
+                </tr>
+                <tr>
+                    <td>Your email:</td>
+                    <td>olebond@gmail.com</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col align-items-center align-content-center align-self-center" style="width: 318px;"><a
+            class="btn btn-primary btn-block text-center d-lg-flex flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-content-center align-self-center justify-content-lg-center align-items-lg-center"
+            role="button"
+            style="width: 150px;height: 50px;background-color: rgb(14,224,136);background-position: center;font-weight: bold;"
+            href="order.html">New order!</a></div>
+</div>
+<div class="row">
+    <div class="col">
+        <p class="d-lg-flex justify-content-lg-center align-items-lg-end" style="font-size: 23px;">
+            <strong>Settings</strong></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Minimal price for truck hire</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Price for 1 km of truck drive</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Price for 1 km of delivery of 1 ton of cargo</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Multiply coef for cargo type FOOD</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Multiply coef for cargo type FRAGILE</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>Multiply coef for cargo type DANGEROUS</td>
+                    <td><input type="text"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/script.min.js"></script>
+</body>
+
+</html>

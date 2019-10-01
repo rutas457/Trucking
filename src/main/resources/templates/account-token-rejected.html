@@ -1,0 +1,13 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Token has expired</title>
+</head>
+<body align="center">
+<h3 th:text="#{token.expired}"></h3>
+<form action="/confirm-account/resend" method="post">
+    <a href="/login" type="submit" class="button" th:text="#{send.new.token}"></a>
+</form>
+</body>
+
+</html>

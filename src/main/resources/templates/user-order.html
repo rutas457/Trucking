@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title th:text="#{nav.order}"></title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+    <div class="container"><a class="navbar-brand" href="#">TruckKing</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse"
+             id="navcol-1">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/personal-cabinet"
+                                                            th:text="#{cabinet}"></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/place-order"
+                                                            th:text="#{order}"></a></li>
+
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/users"
+                                                                                                  th:text="#{nav.usersList}"></a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/cabinet"
+                                                                                                  th:text="#{orders}"></a>
+                </li>
+            </ul>
+            <span class="navbar-text actions"> <a class="login" th:href="@{/logout}" th:text="#{nav.logout}"></a></span>
+            <button class="btn" type="button" id="locales" value="uk"
+                    style="height: 20px;background-image: url(&quot;/assets/img/ua.jpg&quot;);background-position: center;margin-right: 2px;margin-left: 15px;"></button>
+            <button
+                    class="btn" type="button" id="locales2" value="en"
+                    style="height: 20px;background-image: url(&quot;/assets/img/en.jpg&quot;);background-position: center;background-size: cover;background-repeat: no-repeat;padding-right: 12px;margin: 6px;margin-top: 6px;margin-right: -27px;margin-left: 1px;"></button>
+        </div>
+    </div>
+</nav>
+<div class="register-photo">
+    <div class="form-container">
+        <div class="image-holder" style="background-image: url(&quot;/assets/img/banner.jpg&quot;);"></div>
+        <form action="/user/place-order" th:action="@{/user/place-order}" method="post" th:object="${orderDTO}">
+            <h2 class="text-center"><strong th:text="#{nav.order}"></strong></h2><input th:field="*{cargoName}"
+                                                                                        class="form-control" type="text"
+                                                                                        th:placeholder="#{cargo.name}"
+                                                                                        style="margin-top: -22px;margin-bottom: 3px;">
+            <div class="form-group" style="margin-top: 9px;"><label th:text="#{from.city}"></label><select
+                    th:field="*{fromCity}" class="form-control">
+                <optgroup label="Select from">
+                    <option th:each="city : ${cities}"
+                            th:value="${city}"
+                            th:utext="${city}"/>
+                </optgroup>
+            </select></div>
+            <div class="form-group"><label th:text="#{to.city}"></label><select th:field="*{toCity}"
+                                                                                class="form-control">
+                <optgroup label="Select to">
+                    <option th:each="city : ${endCities}"
+                            th:value="${city}"
+                            th:utext="${city}"/>
+                </optgroup>
+            </select></div>
+            <label th:text="#{shipment.date}"></label>
+            <div class="form-group"><input class="form-control" id="txtDate" type="date" th:field="*{shippingStart}">
+            </div>
+            <div class="form-group"><label th:text="#{arrival.date}"></label><input class="form-control" type="date"
+                                                                                    id="txtDateEnd"
+                                                                                    th:field="*{shippingEnd}"></div>
+            <div class="form-group"><input class="form-control" type="number" min="1" max="40"
+                                           th:placeholder="#{weight}"
+                                           th:value = "${weight}"
+                                           th:field="*{weight}"></div>
+            <span class="red" th:if="${#fields.hasErrors('weight')}"
+                  th:errors="*{weight}"></span>
+            <div class="form-group"><label th:text="#{cargo.type}"></label><select class="form-control"
+                                                                                   th:field="*{cargoType}">
+                <optgroup>
+                    <option th:each="type : ${cargoTypes}"
+                            th:value="${type}"
+                            th:text="${type}"/>
+                </optgroup>
+            </select></div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" style="background-color: #00bce2;" type="submit"
+                        th:text="#{submit}">
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/script.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+        var maxDate = year + '-' + month + '-' + day;
+        $('#txtDate').attr('min', maxDate);
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#txtDate').change(function () {
+            var inputDate = new Date(this.value);
+            var month = inputDate.getMonth() + 1;
+            var day = inputDate.getDate();
+            var year = inputDate.getFullYear();
+            if (month < 10)
+                month = '0' + month.toString();
+            if (day < 10)
+                day = '0' + day.toString();
+            var maxDate = year + '-' + month + '-' + (day + 1);
+            if (new Date(maxDate) > inputDate) {
+                $('#txtDateEnd').val(maxDate);
+            }
+            $('#txtDateEnd').attr('min', maxDate);
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script>
+    $('select').on('change', function () {
+
+        $('select').find('option').prop('disabled', false);
+
+        $('select').each(function () {
+            $('select').not(this).find('option[value="' + this.value + '"]').prop('disabled', true);
+        });
+
+    });
+</script>
+</body>
+
+</html>

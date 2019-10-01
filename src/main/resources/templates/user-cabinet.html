@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Cabinet</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="/assets/css/styles4.min.css">
+
+</head>
+
+<body th:object="${user}">
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+    <div class="container"><a class="navbar-brand" href="#">TruckKing</a>
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse"
+             id="navcol-1">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/personal-cabinet"
+                                                            th:text="#{cabinet}"></a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="/user/place-order"
+                                                            th:text="#{order}"></a></li>
+
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/users"
+                                                                                                  th:text="#{nav.usersList}"></a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" role="presentation"><a class="nav-link"
+                                                                                                  href="/admin/cabinet"
+                                                                                                  th:text="#{orders}"></a>
+                </li>
+            </ul>
+            <span class="navbar-text actions"> <a class="login" th:href="@{/logout}" th:text="#{nav.logout}"></a></span>
+            <button class="btn" type="button" id="locales" value="uk"
+                    style="height: 20px;background-image: url(&quot;/assets/img/ua.jpg&quot;);background-position: center;margin-right: 2px;margin-left: 15px;"></button>
+            <button
+                    class="btn" type="button" id="locales2" value="en"
+                    style="height: 20px;background-image: url(&quot;/assets/img/en.jpg&quot;);background-position: center;background-size: cover;background-repeat: no-repeat;padding-right: 12px;margin: 6px;margin-top: 6px;margin-right: -27px;margin-left: 1px;"></button>
+        </div>
+    </div>
+</nav>
+<div class="row justify-content-center align-items-center align-content-center align-self-center" th:object="${user}">
+    <div class="col" style="width: 404px;">
+        <div class="table-responsive" style="width: 404px;">
+            <table class="table">
+                <thead style="width: 453px;">
+                <tr class="border-light">
+                    <th>Personal data</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Your name:</td>
+                    <td th:text="${user.firstName}+' '+${user.surname}"></td>
+                </tr>
+                <tr>
+                    <td>Your email:</td>
+                    <td th:text="${user.email}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col align-items-center align-content-center align-self-center" style="width: 318px;"><a
+            class="btn btn-primary btn-block text-center d-lg-flex flex-grow-1 flex-shrink-1 flex-fill justify-content-center align-content-center align-self-center justify-content-lg-center align-items-lg-center"
+            role="button"
+            style="width: 150px;height: 50px;background-color: rgb(14,224,136);background-position: center;font-weight: bold;"
+            href="/user/place-order" th:text="#{new.order}"></a></div>
+</div>
+<div class="row">
+    <div class="col">
+        <p class="d-lg-flex justify-content-lg-center align-items-lg-end" style="font-size: 23px;"><strong>Order
+            history</strong></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th th:text="#{cargo.name}"></th>
+                    <th th:text="#{shipment.date}"></th>
+                    <th th:text="#{arrival.date}"></th>
+                    <th th:text="#{from.city}"></th>
+                    <th th:text="#{to.city}"></th>
+                    <th th:text="#{distance}"></th>
+                    <th th:text="#{weight.calc}"></th>
+                    <th th:text="#{cargo.type}"></th>
+                    <th th:text="#{price}"></th>
+                    <th th:text="#{state}"></th>
+                    <th th:text="#{payment}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order: ${orderPage.content}">
+                    <td th:text="${order.cargoName}"></td>
+                    <td th:text="${order.shippingStart}"></td>
+                    <td th:text="${order.shippingEnd}"></td>
+                    <td th:text="${order.route.startCity}"></td>
+                    <td th:text="${order.route.endCity}"></td>
+                    <td th:text="${order.route.distanceInKm}"></td>
+                    <td th:text="${order.weight}"></td>
+                    <td th:text="${order.cargoType}"></td>
+                    <td th:text="${order.price}"></td>
+                    <td th:text="${order.state}"></td>
+                    <td>
+                        <span th:if="${!order.paid}"><a th:href="@{/user/personal-cabinet/pay(id=${order.id})}">Pay</a></span>
+                        <span th:unless="${!order.paid}"><a>Paid</a></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link"
+                                         th:if = "${currentPage > 1}"
+                                         th:href="@{/user/personal-cabinet(size=${orderPage.size}, page=${currentPage-1})}"
+                                         aria-label="Previous"><span
+                        aria-hidden="true">«</span></a></li>
+                <a th:each="pageNumber : ${pageNumbers}">
+                    <li class="page-item"><a class="page-link"
+                                             th:href="@{/user/personal-cabinet(size=${orderPage.size}, page=${pageNumber})}"
+                                             th:text="${pageNumber}"></a></li>
+                </a>
+                <li class="page-item"><a class="page-link"
+                                         th:if="${!(maxPage == currentPage)}"
+                                         th:href="@{/user/personal-cabinet(size=${orderPage.size}, page=${currentPage+1})}"
+                                         aria-label="Next"><span aria-hidden="true">»</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/script.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales").click(function () {
+            var selectedOption = $('#locales').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#locales2").click(function () {
+            var selectedOption = $('#locales2').val();
+            if (selectedOption != '') {
+                window.location.replace('?lang=' + selectedOption);
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
